@@ -2,6 +2,7 @@ import React from "react";
 import "./App.css";
 import Buttons from "./Buttons";
 import Display from "./Display";
+import Formula from "./Formula";
 
 class App extends React.Component {
 
@@ -9,6 +10,7 @@ class App extends React.Component {
     return (
       <div>
         <h1>JS Calculator</h1>
+        <Formula/>
         <Display/>
         <Buttons/>
       </div>
