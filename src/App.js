@@ -5,13 +5,16 @@ import Display from "./Display";
 import Formula from "./Formula";
 
 class App extends React.Component {
+  state = {
+    currentNumber: "0",
+  }
 
   render() {
     return (
       <div>
         <h1>JS Calculator</h1>
         <Formula/>
-        <Display/>
+        <Display currentNumber={this.state.currentNumber}/>
         <Buttons/>
       </div>
     )
