@@ -17,6 +17,7 @@ class Buttons extends React.Component {
                 <button id="six" value="6">6</button>
                 <button id="add" value="+">+</button> 
                 <button id="one" value="1">1</button>
+                <button id="two" value="2">2</button>
                 <button id="three" value="3">3</button> 
                 <button id="zero" value="0">0</button>
                 <button id="decimal" value=".">.</button> 
