@@ -14,7 +14,7 @@ class App extends React.Component {
       <div>
         <h1>JS Calculator</h1>
         <Formula/>
-        <div id="calc-container">
+        <div className="calc-container">
           <Display currentNumberOnDisplay={this.state.currentNumberOnDisplay}/>
           <Buttons id="clear" name="AC" handleClick={this.handleClick}/> 
           <Buttons id="divide" name="/" handleClick={this.handleClick}/>
