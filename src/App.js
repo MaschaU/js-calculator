@@ -7,11 +7,13 @@ import Display from "./Display";
 class App extends React.Component {
 
   state = {
-    currentNumberOnDisplay: "0"
+    currentNumberOnDisplay: "0",
+    operatorAlert: false,
   }
 
   handleClick = (buttonName) => {
     let currentNumberOnDisplay = this.state.currentNumberOnDisplay;
+    let operatorAlert = this.state.operatorAlert;
     switch(buttonName) {
       case "0":
       case "1":
@@ -29,9 +31,23 @@ class App extends React.Component {
           currentNumberOnDisplay = buttonName;
         }
       break;
+      case "+":
+      case "-":
+      case "/":
+      case "*":
+        if (!this.state.operatorAlert) {
+          currentNumberOnDisplay += buttonName;
+          operatorAlert = true;
+        } else {
+          const newNumber = currentNumberOnDisplay.slice(0,currentNumberOnDisplay.length-1);
+          currentNumberOnDisplay = newNumber;
+          currentNumberOnDisplay += buttonName;
+        } 
+      break;
       default:
     }
     this.setState({currentNumberOnDisplay});
+    this.setState({operatorAlert});
   }
 
   /*handleClick = (buttonName) => {
