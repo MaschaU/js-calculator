@@ -9,11 +9,13 @@ class App extends React.Component {
   state = {
     currentNumberOnDisplay: "0",
     operatorAlert: false,
+    decimalAlert: false
   }
 
   handleClick = (buttonName) => {
     let currentNumberOnDisplay = this.state.currentNumberOnDisplay;
     let operatorAlert = this.state.operatorAlert;
+    let decimalAlert = this.state.decimalAlert;
     switch(buttonName) {
       case "0":
       case "1":
@@ -39,6 +41,8 @@ class App extends React.Component {
         if (!this.state.operatorAlert) {
           currentNumberOnDisplay += buttonName;
           operatorAlert = true;
+          decimalAlert = false;
+
         } else {
           const newNumber = currentNumberOnDisplay.slice(0,currentNumberOnDisplay.length-1);
           currentNumberOnDisplay = newNumber;
@@ -47,11 +51,25 @@ class App extends React.Component {
       break;
       case "AC":
         currentNumberOnDisplay = "0";
+        operatorAlert = false;
+        decimalAlert = false;
       break;
+      case "=":
+        currentNumberOnDisplay = eval(currentNumberOnDisplay);
+        operatorAlert = false;
+      break;
+      case ".":
+        if(!decimalAlert) {
+          currentNumberOnDisplay += ".";
+          decimalAlert = true;
+        }
+      break;
+
       default:
     }
     this.setState({currentNumberOnDisplay});
     this.setState({operatorAlert});
+    this.setState({decimalAlert});
   }
 
   /*handleClick = (buttonName) => {
