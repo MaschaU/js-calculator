@@ -27,6 +27,7 @@ class App extends React.Component {
       case "9": 
         if (this.state.currentNumberOnDisplay !== "0") { 
           currentNumberOnDisplay += buttonName;
+          operatorAlert = false;
         } else {
           currentNumberOnDisplay = buttonName;
         }
@@ -43,6 +44,9 @@ class App extends React.Component {
           currentNumberOnDisplay = newNumber;
           currentNumberOnDisplay += buttonName;
         } 
+      break;
+      case "AC":
+        currentNumberOnDisplay = "0";
       break;
       default:
     }
@@ -73,7 +77,7 @@ class App extends React.Component {
         <Button id="seven" name="7" handleClick={this.handleClick} />
         <Button id="eight" name="8" handleClick={this.handleClick} />
         <Button id="nine" name="9" handleClick={this.handleClick} />
-        <Button id="clear" name="C" handleClick={this.handleClick} />
+        <Button id="clear" name="AC" handleClick={this.handleClick} />
         <Button id="equals" name="=" handleClick={this.handleClick} />
         <Button id="decimal" name="." handleClick={this.handleClick} />
         <Button id="add" name="+" handleClick={this.handleClick} />
