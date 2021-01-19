@@ -1,3 +1,4 @@
+/* eslint-disable no-eval */
 import React from "react";
 import "./App.css";
 import Button from "./Button";
@@ -9,13 +10,17 @@ class App extends React.Component {
   state = {
     currentNumberOnDisplay: "0",
     operatorAlert: false,
-    decimalAlert: false
+    decimalAlert: false,
+    negativeAlert: false
+    
   }
 
   handleClick = (buttonName) => {
     let currentNumberOnDisplay = this.state.currentNumberOnDisplay;
     let operatorAlert = this.state.operatorAlert;
     let decimalAlert = this.state.decimalAlert;
+    let negativeAlert = this.state.negativeAlert;
+
     switch(buttonName) {
       case "0":
       case "1":
@@ -34,6 +39,7 @@ class App extends React.Component {
           currentNumberOnDisplay = buttonName;
         }
       break;
+      
       case "+":
       case "-":
       case "/":
@@ -48,6 +54,19 @@ class App extends React.Component {
           currentNumberOnDisplay = newNumber;
           currentNumberOnDisplay += buttonName;
         } 
+
+        if (buttonName!== "-") {
+          if (this.state.negativeAlert) {
+            let newNumberOnDisplay = currentNumberOnDisplay.slice(0, currentNumberOnDisplay.length-2);
+            newNumberOnDisplay += buttonName;
+            currentNumberOnDisplay = newNumberOnDisplay;
+          } else {
+            if (!this.state.negativeAlert) {
+              currentNumberOnDisplay += buttonName;
+              this.setState({negativeAlert: true})
+            }
+          }
+        }
       break;
       case "AC":
         currentNumberOnDisplay = "0";
@@ -70,6 +89,7 @@ class App extends React.Component {
     this.setState({currentNumberOnDisplay});
     this.setState({operatorAlert});
     this.setState({decimalAlert});
+    this.setState({negativeAlert});
   }
 
   /*handleClick = (buttonName) => {
