@@ -5,7 +5,7 @@ class Display extends React.Component {
     render() {
         return(
             <div id="display">
-                {this.props.currentNumberOnDisplay}
+                {this.props.currentExpression}
             </div>
         )
     }

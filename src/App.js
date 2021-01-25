@@ -8,18 +8,18 @@ import Display from "./Display";
 class App extends React.Component {
 
   state = {
-    currentNumberOnDisplay: "0",
-    operatorAlert: false,
+    currentExpression: "0",
+    previousButtonIsOperator: false,
     decimalAlert: false,
-    negativeAlert: false
+    previousButtonIsMinus: false
     
   }
 
   handleClick = (buttonName) => {
-    let currentNumberOnDisplay = this.state.currentNumberOnDisplay;
-    let operatorAlert = this.state.operatorAlert;
+    let currentExpression = this.state.currentExpression;
+    let previousButtonIsOperator = this.state.previousButtonIsOperator;
     let decimalAlert = this.state.decimalAlert;
-    let negativeAlert = this.state.negativeAlert;
+    let previousButtonIsMinus = this.state.previousButtonIsMinus;
 
     switch(buttonName) {
       case "0":
@@ -32,79 +32,81 @@ class App extends React.Component {
       case "7":
       case "8":
       case "9": 
-        if (this.state.currentNumberOnDisplay !== "0") { 
-          currentNumberOnDisplay += buttonName;
-          operatorAlert = false;
+        if (currentExpression !== "0") { 
+          currentExpression += buttonName;
+          previousButtonIsOperator = false;
         } else {
-          currentNumberOnDisplay = buttonName;
+          currentExpression = buttonName;
         }
+      break;
+      case "-":
+        currentExpression += buttonName;
+        decimalAlert = false;
+        previousButtonIsMinus = true;
+        // if the previous button pressed was an operator
+        // the minus is "part" of the next number and will be considered "negative"
+        // however! if the previous button pressed was NOT an operator
+        // the minus is considered to be an operator
+        previousButtonIsOperator = !previousButtonIsOperator;
       break;
       
+      // if the last button pressed is an operator button
       case "+":
-      case "-":
       case "/":
       case "*":
-        if (!this.state.operatorAlert) {
-          currentNumberOnDisplay += buttonName;
-          operatorAlert = true;
-          decimalAlert = false;
-
+        // if the previous button pressed before that was an operator
+        if (previousButtonIsOperator || previousButtonIsMinus) {
+          // we need to discard the previous operator from the currentExpression
+          const newExpression = currentExpression.slice(0,currentExpression.length-1);
+          // and add the new pressed button to the expression
+          currentExpression = newExpression + buttonName;
         } else {
-          const newNumber = currentNumberOnDisplay.slice(0,currentNumberOnDisplay.length-1);
-          currentNumberOnDisplay = newNumber;
-          currentNumberOnDisplay += buttonName;
-        } 
-
-        if (buttonName!== "-") {
-          if (this.state.negativeAlert) {
-            let newNumberOnDisplay = currentNumberOnDisplay.slice(0, currentNumberOnDisplay.length-2);
-            newNumberOnDisplay += buttonName;
-            currentNumberOnDisplay = newNumberOnDisplay;
-          } else {
-            if (!this.state.negativeAlert) {
-              currentNumberOnDisplay += buttonName;
-              this.setState({negativeAlert: true})
-            }
-          }
+          currentExpression += buttonName;
+          decimalAlert = false;
         }
+
+        previousButtonIsOperator = true;
       break;
       case "AC":
-        currentNumberOnDisplay = "0";
-        operatorAlert = false;
+        currentExpression = "0";
+        previousButtonIsOperator = false;
         decimalAlert = false;
       break;
       case "=":
-        currentNumberOnDisplay = eval(currentNumberOnDisplay);
-        operatorAlert = false;
+        currentExpression = eval(currentExpression);
+        previousButtonIsOperator = false;
       break;
       case ".":
         if(!decimalAlert) {
-          currentNumberOnDisplay += ".";
+          currentExpression += ".";
           decimalAlert = true;
         }
+        previousButtonIsOperator = false;
       break;
 
       default:
     }
-    this.setState({currentNumberOnDisplay});
-    this.setState({operatorAlert});
-    this.setState({decimalAlert});
-    this.setState({negativeAlert});
+    this.setState({
+      currentExpression,
+      previousButtonIsOperator,
+      decimalAlert,
+      previousButtonIsMinus,
+    });
   }
 
   /*handleClick = (buttonName) => {
 
       // if button name = (0||1||etc)
-      // let currentNumberOnDisplay = this.state.currentNumberOnDisplay
-      // currentNumberOnDisplay += buttonName
-      // this.setState({currentNumberOnDisplay})
+      // let currentExpression = this.state.currentExpression
+      // currentExpression += buttonName
+      // this.setState({currentExpression})
     }*/    
 
 
   render() {
     return (
       <div id="calc-container">
-        <Display id="display" currentNumberOnDisplay={this.state.currentNumberOnDisplay} />
+        <Display id="display" currentExpression={this.state.currentExpression} />
         <Button id="zero" name="0" handleClick={this.handleClick} />
         <Button id="one" name="1" handleClick={this.handleClick} />
         <Button id="two" name="2" handleClick={this.handleClick} />
